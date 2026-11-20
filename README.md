@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets-banner.png" alt="Muse leaping from WhatsApp to Telegram" width="100%" />
+  <img src="assets/muse-telegram-splash.svg" alt="Muse leaping from WhatsApp to Telegram" width="100%" />
   <h1>✨ Muse Telegram Bridge</h1>
   <p><strong>Bring Muse into Telegram groups.</strong></p>
   <p>A queue-backed, serverless bridge connecting Telegram conversations to your Muse AI runtime.</p>
@@ -11,7 +11,6 @@
 </div>
 
 ## 🌌 What is this?
-
 Muse Telegram Bridge makes Muse available inside Telegram group chats. It is deliberately a **transport layer**: Muse remains responsible for intelligence, tools, and model execution, while this bridge handles webhooks, routing, group context, media transfer, and response delivery.
 
 ### Features
@@ -26,7 +25,6 @@ Muse Telegram Bridge makes Muse available inside Telegram group chats. It is del
 > **API compatibility:** Muse's exact endpoint and media contract must be confirmed. The included adapter is Responses-style and isolated in `src/muse.ts` for easy replacement.
 
 ## 🧭 Architecture
-
 ```mermaid
 flowchart TD
   TG[Telegram Group] --> WH[Worker Webhook]
@@ -39,7 +37,6 @@ flowchart TD
 ```
 
 ## 🗣️ Interactions
-
 | Trigger | Behaviour |
 |---|---|
 | `@Muse ...` | Mention Muse |
@@ -54,11 +51,9 @@ flowchart TD
 Mention mode is the default. `all` requires Telegram to deliver ordinary group messages to the bot.
 
 ## 📎 Media
-
-The bridge downloads Telegram attachments via `getFile`, applies a configurable size cap, and forwards data URLs to Muse. Photos are represented as image inputs; other media as file inputs. Actual formats supported depend on your Muse endpoint.
+The bridge fetches Telegram attachments via `getFile`, applies a configurable size cap, and forwards data URLs to Muse. Photos use image inputs; other media use file inputs. Actual formats supported depend on your Muse endpoint.
 
 ## 🚀 Deploy
-
 **Prerequisites:** Node.js 20+, Cloudflare account/Wrangler, a Telegram bot from [@BotFather](https://t.me/BotFather), and a Muse endpoint/key/model.
 
 1. Install and configure:
@@ -94,7 +89,6 @@ The bridge downloads Telegram attachments via `getFile`, applies a configurable 
    ```
 
 ## 🔧 Configuration
-
 | Variable | Purpose |
 |---|---|
 | `TELEGRAM_BOT_TOKEN` | Telegram bot token (secret) |
@@ -107,19 +101,16 @@ The bridge downloads Telegram attachments via `getFile`, applies a configurable 
 | `CONTEXT_MESSAGES` | Recent context; default 20, max 50 |
 
 ## 🧩 Muse adapter
-
 `src/muse.ts` posts a Responses-style payload. Images use `input_image` data URLs and attachments use `input_file`. If Muse's API contract differs, change this adapter without touching Telegram routing.
 
 ## 🔐 Privacy
-
 - Mention-only is the default.
 - Full group-message mode should be enabled only with group consent.
 - Recent group context is stored in D1; define retention before using in sensitive groups.
-- Secrets belong in Cloudflare secrets, never committed.
+- Store secrets in Cloudflare, never commit them.
 - This uses the official Telegram Bot API—not personal-account automation.
 
 ## 🛠️ Local development
-
 ```bash
 npm run dev
 npm run typecheck
@@ -127,10 +118,9 @@ npm test
 ```
 
 ## 🗺️ Roadmap
-
 - [x] Webhook + queue
 - [x] Mention / command / reply routing
-- [x] D1 group config and context
+- [x] D1 group config and recent context
 - [x] Attachment forwarding adapter
 - [ ] Confirm Muse API contract
 - [ ] Debounce rapid group messages

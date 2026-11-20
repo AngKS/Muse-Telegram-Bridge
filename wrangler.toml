@@ -1,0 +1,35 @@
+name = "muse-telegram-bridge"
+main = "src/index.ts"
+compatibility_date = "2025-11-20"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+MUSE_API_URL = "https://api.example.com/v1/responses"
+MUSE_MODEL = "muse"
+MUSE_API_MODE = "responses"
+MAX_MEDIA_BYTES = "8388608"
+CONTEXT_MESSAGES = "20"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "muse-telegram-bridge"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+migrations_dir = "migrations"
+
+[[queues.producers]]
+binding = "UPDATES"
+queue = "muse-telegram-updates"
+
+[[queues.consumers]]
+queue = "muse-telegram-updates"
+max_batch_size = 10
+max_batch_timeout = 5
+max_retries = 3
+dead_letter_queue = "muse-telegram-updates-dlq"
+
+[[queues.producers]]
+binding = "DLQ"
+queue = "muse-telegram-updates-dlq"
+
+[observability]
+enabled = true
